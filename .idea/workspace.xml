@@ -44,8 +44,8 @@
       <file leaf-file-name="GhostBot.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/GhostBot.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.50108695" vertical-offset="1290" max-vertical-offset="2414">
-              <caret line="105" column="29" selection-start-line="105" selection-start-column="29" selection-end-line="105" selection-end-column="29" />
+            <state vertical-scroll-proportion="0.50108695" vertical-offset="1239" max-vertical-offset="2414">
+              <caret line="102" column="86" selection-start-line="102" selection-start-column="86" selection-end-line="102" selection-end-column="86" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#326#357#0" expanded="true" />
@@ -452,12 +452,12 @@
       <updated>1426321426577</updated>
       <workItem from="1426321433198" duration="10604000" />
       <workItem from="1426480816005" duration="1688000" />
-      <workItem from="1426529648769" duration="642000" />
+      <workItem from="1426529648769" duration="712000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="12934000" />
+    <option name="totallyTimeSpent" value="13004000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -569,8 +569,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/GhostBot.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.50108695" vertical-offset="1290" max-vertical-offset="2414">
-          <caret line="105" column="29" selection-start-line="105" selection-start-column="29" selection-end-line="105" selection-end-column="29" />
+        <state vertical-scroll-proportion="0.50108695" vertical-offset="1239" max-vertical-offset="2414">
+          <caret line="102" column="86" selection-start-line="102" selection-start-column="86" selection-end-line="102" selection-end-column="86" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#326#357#0" expanded="true" />

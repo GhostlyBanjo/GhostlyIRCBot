@@ -100,7 +100,7 @@ if(!sleep){
                     sendMessage(channel,"For more information, say \"GhostBot help <command name>");
                 }
             }
-            if(msg[1].equalsIgnoreCase("kill")){
+            if(msg[1].equalsIgnoreCase("kill")&& sender.equalsIgnoreCase("Articalla")){
                 sendMessage(channel,"Goodbye, friends.");
                 sendAction(channel, "commits seppuku");
                 System.exit(0);
