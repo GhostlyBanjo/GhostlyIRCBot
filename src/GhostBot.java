@@ -1,13 +1,10 @@
 import org.jibble.pircbot.PircBot;
 
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.PriorityQueue;
 
 /**
  * Created by Forrest on 3/14/2015.
@@ -103,7 +100,11 @@ if(!sleep){
                     sendMessage(channel,"For more information, say \"GhostBot help <command name>");
                 }
             }
-
+            if(msg[1].equalsIgnoreCase("kill")){
+                sendMessage(channel,"Goodbye, friends.");
+                sendAction(channel, "commits seppuku");
+                System.exit(0);
+            }
         }
             else{
                 if((msg[1].equalsIgnoreCase("rise")||msg[1].equalsIgnoreCase("wake")||msg[1].equalsIgnoreCase("arise"))&& sender.equalsIgnoreCase("Articalla"))
@@ -120,6 +121,7 @@ if(!sleep){
         if(!sender.equalsIgnoreCase("GhostBot")) {
             if (!userDB.contains(sender)) {
                 sendMessage(channel, "Welcome, " + sender + ", to the channel for the first time!");
+                userDB.add(sender);
             } else {
                 sendMessage(channel, "Welcome back, " + sender + "!");
             }
