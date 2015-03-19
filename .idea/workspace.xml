@@ -34,10 +34,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="Main.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Main.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.32850242" vertical-offset="0" max-vertical-offset="621">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="425">
               <caret line="12" column="27" selection-start-line="12" selection-start-column="27" selection-end-line="12" selection-end-column="27" />
               <folding />
             </state>
@@ -64,18 +64,18 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="GhostBot.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="GhostBot.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/GhostBot.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="2367" max-vertical-offset="2975">
-              <caret line="153" column="48" selection-start-line="153" selection-start-column="48" selection-end-line="153" selection-end-column="48" />
+            <state vertical-scroll-proportion="0.5246711" vertical-offset="123" max-vertical-offset="2992">
+              <caret line="26" column="35" selection-start-line="26" selection-start-column="35" selection-end-line="26" selection-end-column="35" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#326#357#0" expanded="true" />
                 <element signature="e#405#413#0" expanded="true" />
                 <element signature="e#464#472#0" expanded="true" />
                 <element signature="e#524#532#0" expanded="true" />
-                <element signature="e#2257#2265#0" expanded="true" />
+                <element signature="e#2293#2301#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -106,8 +106,8 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/GhostBot.java" />
         <option value="$PROJECT_DIR$/src/Main.java" />
+        <option value="$PROJECT_DIR$/src/GhostBot.java" />
       </list>
     </option>
   </component>
@@ -512,12 +512,12 @@
       <workItem from="1426529648769" duration="1474000" />
       <workItem from="1426614452175" duration="352000" />
       <workItem from="1426615296268" duration="10000" />
-      <workItem from="1426787101144" duration="1843000" />
+      <workItem from="1426787101144" duration="2317000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="15971000" />
+    <option name="totallyTimeSpent" value="16445000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="7" />
@@ -596,7 +596,7 @@
             <element signature="e#405#413#0" expanded="true" />
             <element signature="e#464#472#0" expanded="true" />
             <element signature="e#524#532#0" expanded="true" />
-            <element signature="e#2257#2265#0" expanded="true" />
+            <element signature="e#2293#2301#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -635,7 +635,7 @@
             <element signature="e#405#413#0" expanded="true" />
             <element signature="e#464#472#0" expanded="true" />
             <element signature="e#524#532#0" expanded="true" />
-            <element signature="e#2257#2265#0" expanded="true" />
+            <element signature="e#2293#2301#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -674,7 +674,7 @@
             <element signature="e#405#413#0" expanded="true" />
             <element signature="e#464#472#0" expanded="true" />
             <element signature="e#524#532#0" expanded="true" />
-            <element signature="e#2257#2265#0" expanded="true" />
+            <element signature="e#2293#2301#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -713,7 +713,7 @@
             <element signature="e#405#413#0" expanded="true" />
             <element signature="e#464#472#0" expanded="true" />
             <element signature="e#524#532#0" expanded="true" />
-            <element signature="e#2257#2265#0" expanded="true" />
+            <element signature="e#2293#2301#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -736,7 +736,7 @@
             <element signature="e#405#413#0" expanded="true" />
             <element signature="e#464#472#0" expanded="true" />
             <element signature="e#524#532#0" expanded="true" />
-            <element signature="e#2257#2265#0" expanded="true" />
+            <element signature="e#2293#2301#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -773,26 +773,26 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="425">
+          <caret line="12" column="27" selection-start-line="12" selection-start-column="27" selection-end-line="12" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/GhostBot.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="2367" max-vertical-offset="2975">
-          <caret line="153" column="48" selection-start-line="153" selection-start-column="48" selection-end-line="153" selection-end-column="48" />
+        <state vertical-scroll-proportion="0.5246711" vertical-offset="123" max-vertical-offset="2992">
+          <caret line="26" column="35" selection-start-line="26" selection-start-column="35" selection-end-line="26" selection-end-column="35" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#326#357#0" expanded="true" />
             <element signature="e#405#413#0" expanded="true" />
             <element signature="e#464#472#0" expanded="true" />
             <element signature="e#524#532#0" expanded="true" />
-            <element signature="e#2257#2265#0" expanded="true" />
+            <element signature="e#2293#2301#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.32850242" vertical-offset="0" max-vertical-offset="621">
-          <caret line="12" column="27" selection-start-line="12" selection-start-column="27" selection-end-line="12" selection-end-column="27" />
-          <folding />
         </state>
       </provider>
     </entry>

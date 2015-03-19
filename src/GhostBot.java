@@ -24,6 +24,7 @@ public class GhostBot extends PircBot{
 
     public GhostBot(String name){
         this.setName(name);
+        adminList.add("Articalla");
 
     }
 
