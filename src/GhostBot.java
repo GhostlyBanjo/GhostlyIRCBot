@@ -13,24 +13,47 @@ public class GhostBot extends PircBot{
 
     HashMap<String,PriorityQueue<String>> tellList = new HashMap<String, PriorityQueue<String>>();
     ArrayList<String> userDB = new ArrayList<String>();
-    String history = "";
+    ArrayList<String> adminList = new ArrayList<String>();
+    ArrayList<String> onlineList = new ArrayList<String>();
+    public String channelo;
+     String history = "";
+    String[] userList;
     boolean sleep = false;
 
 
 
-    public GhostBot(){
-        this.setName("GhostBot");
+    public GhostBot(String name){
+        this.setName(name);
+
     }
 
     public void onMessage(String channel, String sender,
                           String login, String hostname, String message) {
+        boolean isOp = false;
+
+        if(adminList.contains(sender))
+            isOp = true;
+
 
         String[] msg = message.split(" ");
-        if (msg[0].equalsIgnoreCase("ghostbot")||msg[0].equalsIgnoreCase("ghostbot:")) {
+        if (msg[0].equalsIgnoreCase(this.getName())||msg[0].equalsIgnoreCase(this.getName()+":")) {
 if(!sleep){
             if(msg[1].equalsIgnoreCase("time")){
             String time = new java.util.Date().toString();
             sendMessage(channel, sender + ", The time is now " + time);}
+
+            if (msg[1].equalsIgnoreCase("addOp")&& isOp){
+                if(isOp){
+                adminList.add(msg[2]);
+                sendMessage(channel,"Added " + msg[2] + " to the admin list!");
+                sendMessage(msg[2], sender + " added you to the admin list for " + channel);}
+            }
+            if (msg[1].equalsIgnoreCase("takeOp")&&isOp){
+                if(isOp){
+                adminList.remove(msg[2]);
+                sendMessage(channel,"Removed " + msg[2] + " to the admin list!");
+                sendMessage(msg[2], sender + " removed you from the admin list for " + channel);}
+            }
 
             if(msg[1].equalsIgnoreCase("tell")){
                 String tgt = msg[2];
@@ -48,35 +71,26 @@ if(!sleep){
             if(msg[1].equalsIgnoreCase("link")){
 
             }
-            if(msg[1].equalsIgnoreCase("sleep")&& sender.equalsIgnoreCase("Articalla")){
+            if(msg[1].equalsIgnoreCase("sleep") && isOp){
                 sleep = true;
                 sendMessage(channel, "Going to sleep!");
             }
-            if(msg[1].equalsIgnoreCase("dump")){
+            if(msg[1].equalsIgnoreCase("dump")&&isOp){
+
                 if(msg[2].equalsIgnoreCase("ToChat")){
                 String[] output = history.split("\n");
                 for(String o : output)
-                sendMessage(channel, o);}
+                sendMessage(sender, o);}
                 if(msg[2].equalsIgnoreCase("toFile")){
                     try {
                         sendMessage(channel, "Writing history to file...");
-                            String filename = new java.util.Date().toString().replace(':', '_');
-
-                        FileWriter out = new FileWriter(filename + ".txt");
-
-                        String[] output = history.split("\n");
-                        for(String o : output){
-                            out.write(o);
-                            out.write((char)10);}
-                        out.close();
-                        history = "";
-
+                            writeHistoryToFile();
                         sendMessage(channel, "Done!");
                     } catch (IOException e) {
-                        e.printStackTrace();
+
                     }
-                }
-            }
+                }}
+
             if(msg[1].equalsIgnoreCase("about")){
                 sendMessage(channel, "I'm GhostBot.  I was made on 2015 May 14 by some guy named Forrest.  I only understand a few commands right now.");
             }
@@ -86,17 +100,14 @@ if(!sleep){
                         sendMessage(sender, "Usage: Ghostbot tell <target name> [message]");
                         sendMessage(sender, "This leaves a message for the target person, and I'll relay it to them when they return.");
                     }
-                    if(msg[2].equalsIgnoreCase("dump")){
-                        sendMessage(sender, "Usage: Ghostbot dump [toChat/toFile]");
-                        sendMessage(sender, "Dumps the chat history since the last dump, either to the chat, or to a file on the server. ");
-                    }
+
                     if(msg[2].equalsIgnoreCase("time")){
                         sendMessage(sender, "Relays the current time and date of the server.");
                     }
                 }else{
                     sendMessage(channel,"I'm GhostBot.");
                     sendMessage(channel,"If you need me to do something, say, \"GhostBot <command>\".");
-                    sendMessage(channel,"Commands: HELP, TELL, TIME, DUMP, ABOUT");
+                    sendMessage(channel,"Commands: HELP, TELL, TIME, ABOUT");
                     sendMessage(channel,"For more information, say \"GhostBot help <command name>");
                 }
             }
@@ -118,6 +129,8 @@ if(!sleep){
         history = history + "\n" + new java.util.Date().toString() + "|" + sender + ":" + message;
     }
     public void onJoin(String channel, String sender, String login, String hostname){
+        onlineList.add(sender);
+
         if(!sender.equalsIgnoreCase("GhostBot")) {
             if (!userDB.contains(sender)) {
                 sendMessage(channel, "Welcome, " + sender + ", to the channel for the first time!");
@@ -130,9 +143,27 @@ if(!sleep){
                 sendMessage(sender, sender + ", you have " + tellList.get(sender).size() + " new messages");
                 for (String s : tellList.get(sender)) {
                     sendMessage(sender, s);
+                    tellList.get(sender).clear();
                 }
-                sendMessage(sender, "Usage: Ghostbot time");
+
             }
         }
+    }
+    protected void onQuit(String sender, String login, String host, String reason){
+                onlineList.remove(sender);
+                sendMessage(this.getChannels()[0], "Goodbye, "+sender+"!");
+    }
+
+    public void writeHistoryToFile() throws IOException {
+        String filename = new java.util.Date().toString().replace(':', '_');
+
+        FileWriter out = new FileWriter(filename + ".txt");
+
+        String[] output = history.split("\n");
+        for(String o : output){
+            out.write(o);
+            out.write((char)10);}
+        out.close();
+        history = "";
     }
 }

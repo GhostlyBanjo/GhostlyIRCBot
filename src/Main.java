@@ -6,11 +6,12 @@ public class Main {
        static GhostBot bot;
 
     public static void main(String[] args) throws Exception{
-        bot = new GhostBot();
+        bot = new GhostBot("AudaxBot");
 
         bot.setVerbose(true);
-        bot.connect("nova.esper.net");
+        bot.connect("chaos.esper.net");
         bot.joinChannel("#Audax");
+
     }
 
 
