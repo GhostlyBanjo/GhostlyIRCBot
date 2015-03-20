@@ -1,0 +1,238 @@
+<html>
+<head>
+<title>GhostBot.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.ln { color: rgb(0,0,0); font-weight: normal; font-style: normal; }
+.s0 { color: rgb(204,120,50); }
+.s1 { color: rgb(169,183,198); }
+.s2 { color: rgb(98,151,85); }
+.s3 { color: rgb(128,128,128); }
+.s4 { color: rgb(106,135,89); }
+.s5 { color: rgb(104,151,187); }
+</style>
+</head>
+<BODY BGCOLOR="#2b2b2b">
+<TABLE CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#C0C0C0" >
+<TR><TD><CENTER>
+<FONT FACE="Arial, Helvetica" COLOR="#000000">
+GhostBot.java</FONT>
+</center></TD></TR></TABLE>
+<pre>
+
+<span class="s0">import </span><span class="s1">org.jibble.pircbot.PircBot</span><span class="s0">;</span><span class="s1"> 
+ 
+</span><span class="s0">import </span><span class="s1">java.io.FileWriter</span><span class="s0">;</span><span class="s1"> 
+</span><span class="s0">import </span><span class="s1">java.io.IOException</span><span class="s0">;</span><span class="s1"> 
+</span><span class="s0">import </span><span class="s1">java.util.ArrayList</span><span class="s0">;</span><span class="s1"> 
+</span><span class="s0">import </span><span class="s1">java.util.HashMap</span><span class="s0">;</span><span class="s1"> 
+</span><span class="s0">import </span><span class="s1">java.util.PriorityQueue</span><span class="s0">;</span><span class="s1"> 
+ 
+</span><span class="s2">/** 
+ * Created by Forrest on 3/14/2015. 
+ */</span><span class="s1"> 
+</span><span class="s0">public class </span><span class="s1">GhostBot </span><span class="s0">extends </span><span class="s1">PircBot{ 
+ 
+ 
+    </span><span class="s3">//This is where all of the messages are saved.</span><span class="s1"> 
+    HashMap&lt;String</span><span class="s0">,</span><span class="s1">PriorityQueue&lt;String&gt;&gt; tellList = </span><span class="s0">new </span><span class="s1">HashMap&lt;String</span><span class="s0">, </span><span class="s1">PriorityQueue&lt;String&gt;&gt;()</span><span class="s0">;</span><span class="s1"> 
+    </span><span class="s3">//Database of all users ever</span><span class="s1"> 
+    ArrayList&lt;String&gt; userDB = </span><span class="s0">new </span><span class="s1">ArrayList&lt;String&gt;()</span><span class="s0">;</span><span class="s1"> 
+    </span><span class="s3">//List of the current channel admins</span><span class="s1"> 
+    ArrayList&lt;String&gt; adminList = </span><span class="s0">new </span><span class="s1">ArrayList&lt;String&gt;()</span><span class="s0">;</span><span class="s1"> 
+    </span><span class="s3">//List of the currently online folk</span><span class="s1"> 
+    ArrayList&lt;String&gt; onlineList = </span><span class="s0">new </span><span class="s1">ArrayList&lt;String&gt;()</span><span class="s0">;</span><span class="s1"> 
+    </span><span class="s3">//Current Channel</span><span class="s1"> 
+    </span><span class="s0">public </span><span class="s1">String channelo</span><span class="s0">;</span><span class="s1"> 
+    </span><span class="s3">//Current chat history</span><span class="s1"> 
+    String history = </span><span class="s4">&quot;&quot;</span><span class="s0">;</span><span class="s1"> 
+ 
+    </span><span class="s3">//If sleep is true, it won't listen to any commands other than the wake command</span><span class="s1"> 
+    </span><span class="s0">boolean </span><span class="s1">sleep = </span><span class="s0">false;</span><span class="s1"> 
+ 
+ 
+ 
+    </span><span class="s0">public </span><span class="s1">GhostBot(String name){ 
+        </span><span class="s0">this</span><span class="s1">.setName(name)</span><span class="s0">;</span><span class="s1"> 
+        adminList.add(</span><span class="s4">&quot;Articalla&quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+ 
+    } 
+ 
+    </span><span class="s0">public void </span><span class="s1">onMessage(String channel</span><span class="s0">, </span><span class="s1">String sender</span><span class="s0">,</span><span class="s1"> 
+                          String login</span><span class="s0">, </span><span class="s1">String hostname</span><span class="s0">, </span><span class="s1">String message) { 
+        </span><span class="s0">boolean </span><span class="s1">isOp = </span><span class="s0">false;</span><span class="s1"> 
+        </span><span class="s3">//Checks if the sender of the message is an admin on the channel</span><span class="s1"> 
+        </span><span class="s0">if</span><span class="s1">(adminList.contains(sender)) 
+            isOp = </span><span class="s0">true;</span><span class="s1"> 
+ 
+            </span><span class="s3">//breaks the message up into individual words</span><span class="s1"> 
+        String[] msg = message.split(</span><span class="s4">&quot; &quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+ 
+            </span><span class="s3">//checks if the message is referring to the Bot</span><span class="s1"> 
+        </span><span class="s0">if </span><span class="s1">(msg[</span><span class="s5">0</span><span class="s1">].equalsIgnoreCase(</span><span class="s0">this</span><span class="s1">.getName())||msg[</span><span class="s5">0</span><span class="s1">].equalsIgnoreCase(</span><span class="s0">this</span><span class="s1">.getName()+</span><span class="s4">&quot;:&quot;</span><span class="s1">)) { 
+</span><span class="s0">if</span><span class="s1">(!sleep){ 
+ 
+            </span><span class="s3">//Most of the if() statements are checking the second word and implementing a command.</span><span class="s1"> 
+ 
+ 
+            </span><span class="s3">//This command returns the current time relative tot he server</span><span class="s1"> 
+            </span><span class="s0">if</span><span class="s1">(msg[</span><span class="s5">1</span><span class="s1">].equalsIgnoreCase(</span><span class="s4">&quot;time&quot;</span><span class="s1">)){ 
+                </span><span class="s0">this</span><span class="s1">.readTime(channel</span><span class="s0">, </span><span class="s1">sender)</span><span class="s0">;</span><span class="s1"> 
+            } 
+ 
+            </span><span class="s3">//adds a user to the admin list</span><span class="s1"> 
+            </span><span class="s0">if </span><span class="s1">(msg[</span><span class="s5">1</span><span class="s1">].equalsIgnoreCase(</span><span class="s4">&quot;addOp&quot;</span><span class="s1">)&amp;&amp; isOp){ 
+                </span><span class="s0">this</span><span class="s1">.addOp(channel</span><span class="s0">, </span><span class="s1">sender</span><span class="s0">, </span><span class="s1">msg[</span><span class="s5">2</span><span class="s1">])</span><span class="s0">;</span><span class="s1"> 
+            } 
+            </span><span class="s3">//removes a user from the adminList</span><span class="s1"> 
+            </span><span class="s0">if </span><span class="s1">(msg[</span><span class="s5">1</span><span class="s1">].equalsIgnoreCase(</span><span class="s4">&quot;takeOp&quot;</span><span class="s1">)&amp;&amp;isOp){ 
+                </span><span class="s0">this</span><span class="s1">.takeOp(channel</span><span class="s0">, </span><span class="s1">sender</span><span class="s0">, </span><span class="s1">msg[</span><span class="s5">2</span><span class="s1">])</span><span class="s0">;</span><span class="s1"> 
+            } 
+            </span><span class="s3">//Sends a specified user a message to be delievered ot them when they join the chat</span><span class="s1"> 
+            </span><span class="s0">if</span><span class="s1">(msg[</span><span class="s5">1</span><span class="s1">].equalsIgnoreCase(</span><span class="s4">&quot;tell&quot;</span><span class="s1">)){ 
+                String tgt = msg[</span><span class="s5">2</span><span class="s1">]</span><span class="s0">;</span><span class="s1"> 
+                String fin = </span><span class="s4">&quot;&quot;</span><span class="s0">;</span><span class="s1"> 
+                </span><span class="s0">for</span><span class="s1">(</span><span class="s0">int </span><span class="s1">x = </span><span class="s5">3</span><span class="s0">; </span><span class="s1">x&lt; msg.length</span><span class="s0">; </span><span class="s1">x++){ 
+                    fin = fin +</span><span class="s4">&quot; &quot; </span><span class="s1">+  msg[x]</span><span class="s0">;</span><span class="s1"> 
+                } 
+                </span><span class="s0">this</span><span class="s1">.tell(channel</span><span class="s0">, </span><span class="s1">sender</span><span class="s0">, </span><span class="s1">tgt</span><span class="s0">, </span><span class="s1">fin)</span><span class="s0">;</span><span class="s1"> 
+            } 
+ 
+            </span><span class="s0">if</span><span class="s1">(msg[</span><span class="s5">1</span><span class="s1">].equalsIgnoreCase(</span><span class="s4">&quot;sleep&quot;</span><span class="s1">) &amp;&amp; isOp){ 
+                sleep = </span><span class="s0">true;</span><span class="s1"> 
+                sendMessage(channel</span><span class="s0">, </span><span class="s4">&quot;Going to sleep!&quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+            } 
+ 
+               </span><span class="s3">//dumps the chat history to either a file or a private message</span><span class="s1"> 
+ 
+            </span><span class="s0">if</span><span class="s1">(msg[</span><span class="s5">1</span><span class="s1">].equalsIgnoreCase(</span><span class="s4">&quot;dump&quot;</span><span class="s1">)&amp;&amp;isOp){ 
+ 
+                </span><span class="s0">if</span><span class="s1">(msg[</span><span class="s5">2</span><span class="s1">].equalsIgnoreCase(</span><span class="s4">&quot;ToChat&quot;</span><span class="s1">)){ 
+                String[] output = history.split(</span><span class="s4">&quot;</span><span class="s0">\n</span><span class="s4">&quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+                </span><span class="s0">for</span><span class="s1">(String o : output) 
+                sendMessage(sender</span><span class="s0">, </span><span class="s1">o)</span><span class="s0">;</span><span class="s1">} 
+                </span><span class="s0">if</span><span class="s1">(msg[</span><span class="s5">2</span><span class="s1">].equalsIgnoreCase(</span><span class="s4">&quot;toFile&quot;</span><span class="s1">)){ 
+                    </span><span class="s0">try </span><span class="s1">{ 
+                        sendMessage(channel</span><span class="s0">, </span><span class="s4">&quot;Writing history to file...&quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+                            writeHistoryToFile()</span><span class="s0">;</span><span class="s1"> 
+                        sendMessage(channel</span><span class="s0">, </span><span class="s4">&quot;Done!&quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+                    } </span><span class="s0">catch </span><span class="s1">(IOException e) { 
+ 
+                    } 
+                }} 
+ 
+                </span><span class="s3">//Gives information about the bot</span><span class="s1"> 
+ 
+            </span><span class="s0">if</span><span class="s1">(msg[</span><span class="s5">1</span><span class="s1">].equalsIgnoreCase(</span><span class="s4">&quot;about&quot;</span><span class="s1">)){ 
+                sendMessage(channel</span><span class="s0">, </span><span class="s4">&quot;I'm GhostBot.  I was made on 2015 May 14 by some guy named Forrest.  I only understand a few commands right now.&quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+            } 
+ 
+                </span><span class="s3">//Returns the list of commands and how to use them</span><span class="s1"> 
+            </span><span class="s0">if</span><span class="s1">(msg[</span><span class="s5">1</span><span class="s1">].equalsIgnoreCase(</span><span class="s4">&quot;help&quot;</span><span class="s1">)){ 
+                </span><span class="s0">if</span><span class="s1">(msg.length&gt;</span><span class="s5">2</span><span class="s1">){ 
+                    </span><span class="s0">if</span><span class="s1">(msg[</span><span class="s5">2</span><span class="s1">].equalsIgnoreCase(</span><span class="s4">&quot;tell&quot;</span><span class="s1">)){ 
+                        sendMessage(sender</span><span class="s0">, </span><span class="s4">&quot;Usage: Ghostbot tell &lt;target name&gt; [message]&quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+                        sendMessage(sender</span><span class="s0">, </span><span class="s4">&quot;This leaves a message for the target person, and I'll relay it to them when they return.&quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+                    } 
+ 
+                    </span><span class="s0">if</span><span class="s1">(msg[</span><span class="s5">2</span><span class="s1">].equalsIgnoreCase(</span><span class="s4">&quot;time&quot;</span><span class="s1">)){ 
+                        sendMessage(sender</span><span class="s0">, </span><span class="s4">&quot;Relays the current time and date of the server.&quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+                    } 
+                }</span><span class="s0">else</span><span class="s1">{ 
+                    sendMessage(channel</span><span class="s0">,</span><span class="s4">&quot;I'm GhostBot.&quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+                    sendMessage(channel</span><span class="s0">,</span><span class="s4">&quot;If you need me to do something, say, </span><span class="s0">\&quot;</span><span class="s4">GhostBot &lt;command&gt;</span><span class="s0">\&quot;</span><span class="s4">.&quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+                    sendMessage(channel</span><span class="s0">,</span><span class="s4">&quot;Commands: HELP, TELL, TIME, ABOUT&quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+                    sendMessage(channel</span><span class="s0">,</span><span class="s4">&quot;For more information, say </span><span class="s0">\&quot;</span><span class="s4">GhostBot help &lt;command name&gt;&quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+                } 
+            } 
+ 
+                </span><span class="s3">//Only I may send this message.  It stops the process on the machine, effectively killing the bot.</span><span class="s1"> 
+            </span><span class="s0">if</span><span class="s1">(msg[</span><span class="s5">1</span><span class="s1">].equalsIgnoreCase(</span><span class="s4">&quot;kill&quot;</span><span class="s1">)&amp;&amp; sender.equalsIgnoreCase(</span><span class="s4">&quot;Articalla&quot;</span><span class="s1">)){ 
+                sendMessage(channel</span><span class="s0">,</span><span class="s4">&quot;Goodbye, friends.&quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+                sendAction(channel</span><span class="s0">, </span><span class="s4">&quot;commits seppuku&quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+                System.exit(</span><span class="s5">0</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+            } 
+        } 
+            </span><span class="s0">else</span><span class="s1">{ 
+                </span><span class="s0">if</span><span class="s1">((msg[</span><span class="s5">1</span><span class="s1">].equalsIgnoreCase(</span><span class="s4">&quot;rise&quot;</span><span class="s1">)||msg[</span><span class="s5">1</span><span class="s1">].equalsIgnoreCase(</span><span class="s4">&quot;wake&quot;</span><span class="s1">)||msg[</span><span class="s5">1</span><span class="s1">].equalsIgnoreCase(</span><span class="s4">&quot;arise&quot;</span><span class="s1">))&amp;&amp; sender.equalsIgnoreCase(</span><span class="s4">&quot;Articalla&quot;</span><span class="s1">)) 
+                { 
+                    sleep = </span><span class="s0">false;</span><span class="s1"> 
+                    sendMessage(channel</span><span class="s0">,</span><span class="s4">&quot;Waking up!&quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+                } 
+                } 
+        } 
+ 
+        history = history + </span><span class="s4">&quot;</span><span class="s0">\n</span><span class="s4">&quot; </span><span class="s1">+ </span><span class="s0">new </span><span class="s1">java.util.Date().toString() + </span><span class="s4">&quot;|&quot; </span><span class="s1">+ sender + </span><span class="s4">&quot;:&quot; </span><span class="s1">+ message</span><span class="s0">;</span><span class="s1"> 
+    } 
+    </span><span class="s3">//Called whenever a user enters the channel</span><span class="s1"> 
+    </span><span class="s0">public void </span><span class="s1">onJoin(String channel</span><span class="s0">, </span><span class="s1">String sender</span><span class="s0">, </span><span class="s1">String login</span><span class="s0">, </span><span class="s1">String hostname){ 
+        onlineList.add(sender)</span><span class="s0">;</span><span class="s1"> 
+ 
+        </span><span class="s0">if</span><span class="s1">(!sender.equalsIgnoreCase(</span><span class="s4">&quot;GhostBot&quot;</span><span class="s1">)) { 
+            </span><span class="s0">if </span><span class="s1">(!userDB.contains(sender)) { 
+                sendMessage(channel</span><span class="s0">, </span><span class="s4">&quot;Welcome, &quot; </span><span class="s1">+ sender + </span><span class="s4">&quot;, to the channel for the first time!&quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+                userDB.add(sender)</span><span class="s0">;</span><span class="s1"> 
+            } </span><span class="s0">else </span><span class="s1">{ 
+                sendMessage(channel</span><span class="s0">, </span><span class="s4">&quot;Welcome back, &quot; </span><span class="s1">+ sender + </span><span class="s4">&quot;!&quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+            } 
+ 
+            </span><span class="s0">if </span><span class="s1">(tellList.containsKey(sender)) { 
+                sendMessage(sender</span><span class="s0">, </span><span class="s1">sender + </span><span class="s4">&quot;, you have &quot; </span><span class="s1">+ tellList.get(sender).size() + </span><span class="s4">&quot; new messages&quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+                </span><span class="s0">for </span><span class="s1">(String s : tellList.get(sender)) { 
+                    sendMessage(sender</span><span class="s0">, </span><span class="s1">s)</span><span class="s0">;</span><span class="s1"> 
+                    tellList.get(sender).clear()</span><span class="s0">;</span><span class="s1"> 
+                } 
+ 
+            } 
+        } 
+    } 
+    </span><span class="s3">//Called whenever a user leaves the channel</span><span class="s1"> 
+    </span><span class="s0">public void </span><span class="s1">onQuit(String sender</span><span class="s0">, </span><span class="s1">String login</span><span class="s0">, </span><span class="s1">String host</span><span class="s0">, </span><span class="s1">String reason){ 
+                onlineList.remove(sender)</span><span class="s0">;</span><span class="s1"> 
+                sendMessage(</span><span class="s0">this</span><span class="s1">.getChannels()[</span><span class="s5">0</span><span class="s1">]</span><span class="s0">, </span><span class="s4">&quot;Goodbye, &quot;</span><span class="s1">+sender+</span><span class="s4">&quot;!&quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+    } 
+    </span><span class="s3">//Writes the chat history to a file, then clears the history</span><span class="s1"> 
+    </span><span class="s0">public void </span><span class="s1">writeHistoryToFile() </span><span class="s0">throws </span><span class="s1">IOException { 
+        String filename = </span><span class="s0">new </span><span class="s1">java.util.Date().toString().replace(</span><span class="s4">':'</span><span class="s0">, </span><span class="s4">'_'</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+ 
+        FileWriter out = </span><span class="s0">new </span><span class="s1">FileWriter(filename + </span><span class="s4">&quot;.txt&quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+ 
+        String[] output = history.split(</span><span class="s4">&quot;</span><span class="s0">\n</span><span class="s4">&quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+        </span><span class="s0">for</span><span class="s1">(String o : output){ 
+            out.write(o)</span><span class="s0">;</span><span class="s1"> 
+            out.write((</span><span class="s0">char</span><span class="s1">)</span><span class="s5">10</span><span class="s1">)</span><span class="s0">;</span><span class="s1">} 
+        out.close()</span><span class="s0">;</span><span class="s1"> 
+        history = </span><span class="s4">&quot;&quot;</span><span class="s0">;</span><span class="s1"> 
+    } 
+    </span><span class="s3">//Returns the current server time</span><span class="s1"> 
+    </span><span class="s0">public void </span><span class="s1">readTime(String channel</span><span class="s0">, </span><span class="s1">String sender){ 
+        String time = </span><span class="s0">new </span><span class="s1">java.util.Date().toString()</span><span class="s0">;</span><span class="s1"> 
+        sendMessage(channel</span><span class="s0">, </span><span class="s1">sender + </span><span class="s4">&quot;, The time is now &quot; </span><span class="s1">+ time)</span><span class="s0">;</span><span class="s1"> 
+    } 
+    </span><span class="s3">//Adds target to the admin list</span><span class="s1"> 
+    </span><span class="s0">public void </span><span class="s1">addOp(String channel</span><span class="s0">, </span><span class="s1">String sender</span><span class="s0">, </span><span class="s1">String target){ 
+        adminList.add(target)</span><span class="s0">;</span><span class="s1"> 
+        sendMessage(channel</span><span class="s0">,</span><span class="s4">&quot;Added &quot; </span><span class="s1">+ target + </span><span class="s4">&quot; to the admin list!&quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+        sendMessage(target</span><span class="s0">, </span><span class="s1">sender + </span><span class="s4">&quot; added you to the admin list for &quot; </span><span class="s1">+ channel)</span><span class="s0">;</span><span class="s1"> 
+    } 
+    </span><span class="s3">//Removes target from the admin list</span><span class="s1"> 
+    </span><span class="s0">public void </span><span class="s1">takeOp(String channel</span><span class="s0">, </span><span class="s1">String sender</span><span class="s0">, </span><span class="s1">String target) { 
+ 
+        adminList.remove(target)</span><span class="s0">;</span><span class="s1"> 
+        sendMessage(channel</span><span class="s0">,</span><span class="s4">&quot;Removed &quot; </span><span class="s1">+ target + </span><span class="s4">&quot; to the admin list!&quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+        sendMessage(target</span><span class="s0">, </span><span class="s1">sender + </span><span class="s4">&quot; removed you from the admin list for &quot; </span><span class="s1">+ channel)</span><span class="s0">;</span><span class="s1"> 
+    } 
+    </span><span class="s3">//Sends a message to the target to be dlievered to them the very next time the join the channel</span><span class="s1"> 
+    </span><span class="s0">public void </span><span class="s1">tell(String channel</span><span class="s0">, </span><span class="s1">String sender</span><span class="s0">, </span><span class="s1">String target</span><span class="s0">, </span><span class="s1">String message){ 
+ 
+        </span><span class="s0">if</span><span class="s1">(!tellList.containsKey(target)){ 
+            PriorityQueue&lt;String&gt; q = </span><span class="s0">new </span><span class="s1">PriorityQueue&lt;String&gt;()</span><span class="s0">;</span><span class="s1"> 
+            tellList.put(target</span><span class="s0">, </span><span class="s1">q)</span><span class="s0">;</span><span class="s1"> 
+        } 
+        tellList.get(target).add(sender + </span><span class="s4">&quot;: &quot; </span><span class="s1">+ message)</span><span class="s0">;</span><span class="s1"> 
+        sendMessage(channel</span><span class="s0">, </span><span class="s4">&quot;Gotcha, fam&quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+    } 
+} 
+</span></pre>
+</body>
+</html>

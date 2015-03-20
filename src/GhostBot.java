@@ -11,13 +11,21 @@ import java.util.PriorityQueue;
  */
 public class GhostBot extends PircBot{
 
+
+    //This is where all of the messages are saved.
     HashMap<String,PriorityQueue<String>> tellList = new HashMap<String, PriorityQueue<String>>();
+    //Database of all users ever
     ArrayList<String> userDB = new ArrayList<String>();
+    //List of the current channel admins
     ArrayList<String> adminList = new ArrayList<String>();
+    //List of the currently online folk
     ArrayList<String> onlineList = new ArrayList<String>();
+    //Current Channel
     public String channelo;
-     String history = "";
-    String[] userList;
+    //Current chat history
+    String history = "";
+
+    //If sleep is true, it won't listen to any commands other than the wake command
     boolean sleep = false;
 
 
@@ -31,51 +39,50 @@ public class GhostBot extends PircBot{
     public void onMessage(String channel, String sender,
                           String login, String hostname, String message) {
         boolean isOp = false;
-
+        //Checks if the sender of the message is an admin on the channel
         if(adminList.contains(sender))
             isOp = true;
 
-
+            //breaks the message up into individual words
         String[] msg = message.split(" ");
+
+            //checks if the message is referring to the Bot
         if (msg[0].equalsIgnoreCase(this.getName())||msg[0].equalsIgnoreCase(this.getName()+":")) {
 if(!sleep){
+
+            //Most of the if() statements are checking the second word and implementing a command.
+
+
+            //This command returns the current time relative tot he server
             if(msg[1].equalsIgnoreCase("time")){
-            String time = new java.util.Date().toString();
-            sendMessage(channel, sender + ", The time is now " + time);}
+                this.readTime(channel, sender);
+            }
 
+            //adds a user to the admin list
             if (msg[1].equalsIgnoreCase("addOp")&& isOp){
-                if(isOp){
-                adminList.add(msg[2]);
-                sendMessage(channel,"Added " + msg[2] + " to the admin list!");
-                sendMessage(msg[2], sender + " added you to the admin list for " + channel);}
+                this.addOp(channel, sender, msg[2]);
             }
+            //removes a user from the adminList
             if (msg[1].equalsIgnoreCase("takeOp")&&isOp){
-                if(isOp){
-                adminList.remove(msg[2]);
-                sendMessage(channel,"Removed " + msg[2] + " to the admin list!");
-                sendMessage(msg[2], sender + " removed you from the admin list for " + channel);}
+                this.takeOp(channel, sender, msg[2]);
             }
-
+            //Sends a specified user a message to be delievered ot them when they join the chat
             if(msg[1].equalsIgnoreCase("tell")){
                 String tgt = msg[2];
                 String fin = "";
                 for(int x = 3; x< msg.length; x++){
                     fin = fin +" " +  msg[x];
                 }
-                if(!tellList.containsKey(tgt)){
-                    PriorityQueue<String> q = new PriorityQueue<String>();
-                    tellList.put(tgt, q);
-                }
-                tellList.get(tgt).add(sender + ": " + fin);
-                sendMessage(channel, "Gotcha, fam");
+                this.tell(channel, sender, tgt, fin);
             }
-            if(msg[1].equalsIgnoreCase("link")){
 
-            }
             if(msg[1].equalsIgnoreCase("sleep") && isOp){
                 sleep = true;
                 sendMessage(channel, "Going to sleep!");
             }
+
+               //dumps the chat history to either a file or a private message
+
             if(msg[1].equalsIgnoreCase("dump")&&isOp){
 
                 if(msg[2].equalsIgnoreCase("ToChat")){
@@ -92,9 +99,13 @@ if(!sleep){
                     }
                 }}
 
+                //Gives information about the bot
+
             if(msg[1].equalsIgnoreCase("about")){
                 sendMessage(channel, "I'm GhostBot.  I was made on 2015 May 14 by some guy named Forrest.  I only understand a few commands right now.");
             }
+
+                //Returns the list of commands and how to use them
             if(msg[1].equalsIgnoreCase("help")){
                 if(msg.length>2){
                     if(msg[2].equalsIgnoreCase("tell")){
@@ -112,6 +123,8 @@ if(!sleep){
                     sendMessage(channel,"For more information, say \"GhostBot help <command name>");
                 }
             }
+
+                //Only I may send this message.  It stops the process on the machine, effectively killing the bot.
             if(msg[1].equalsIgnoreCase("kill")&& sender.equalsIgnoreCase("Articalla")){
                 sendMessage(channel,"Goodbye, friends.");
                 sendAction(channel, "commits seppuku");
@@ -129,6 +142,7 @@ if(!sleep){
 
         history = history + "\n" + new java.util.Date().toString() + "|" + sender + ":" + message;
     }
+    //Called whenever a user enters the channel
     public void onJoin(String channel, String sender, String login, String hostname){
         onlineList.add(sender);
 
@@ -150,11 +164,12 @@ if(!sleep){
             }
         }
     }
-    protected void onQuit(String sender, String login, String host, String reason){
+    //Called whenever a user leaves the channel
+    public void onQuit(String sender, String login, String host, String reason){
                 onlineList.remove(sender);
                 sendMessage(this.getChannels()[0], "Goodbye, "+sender+"!");
     }
-
+    //Writes the chat history to a file, then clears the history
     public void writeHistoryToFile() throws IOException {
         String filename = new java.util.Date().toString().replace(':', '_');
 
@@ -166,5 +181,33 @@ if(!sleep){
             out.write((char)10);}
         out.close();
         history = "";
+    }
+    //Returns the current server time
+    public void readTime(String channel, String sender){
+        String time = new java.util.Date().toString();
+        sendMessage(channel, sender + ", The time is now " + time);
+    }
+    //Adds target to the admin list
+    public void addOp(String channel, String sender, String target){
+        adminList.add(target);
+        sendMessage(channel,"Added " + target + " to the admin list!");
+        sendMessage(target, sender + " added you to the admin list for " + channel);
+    }
+    //Removes target from the admin list
+    public void takeOp(String channel, String sender, String target) {
+
+        adminList.remove(target);
+        sendMessage(channel,"Removed " + target + " to the admin list!");
+        sendMessage(target, sender + " removed you from the admin list for " + channel);
+    }
+    //Sends a message to the target to be dlievered to them the very next time the join the channel
+    public void tell(String channel, String sender, String target, String message){
+
+        if(!tellList.containsKey(target)){
+            PriorityQueue<String> q = new PriorityQueue<String>();
+            tellList.put(target, q);
+        }
+        tellList.get(target).add(sender + ": " + message);
+        sendMessage(channel, "Gotcha, fam");
     }
 }
